@@ -322,14 +322,14 @@ func (p *Provider) loadConfigurationFromIngresses(ctx context.Context, client Cl
 					portString = fmt.Sprint(pa.Backend.Service.Port.Number)
 				}
 
-				serviceName := provider.Normalize(ingress.Namespace + "-" + pa.Backend.Service.Name + "-" + portString)
+				serviceName := provider.Normalize(ingress.Namespace + "." + pa.Backend.Service.Name + "." + portString)
 				conf.HTTP.Services[serviceName] = service
 
 				rt := loadRouter(rule, pa, rtConfig, serviceName)
 
 				p.applyRouterTransform(ctx, rt, ingress)
 
-				routerKey := strings.TrimPrefix(provider.Normalize(ingress.Namespace+"-"+ingress.Name+"-"+rule.Host+pa.Path), "-")
+				routerKey := strings.TrimPrefix(provider.Normalize(ingress.Namespace+"."+ingress.Name+"."+rule.Host+pa.Path), "-")
 
 				routers[routerKey] = append(routers[routerKey], rt)
 			}
